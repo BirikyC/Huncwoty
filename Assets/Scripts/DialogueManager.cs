@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
-using Unity.VectorGraphics;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -11,6 +10,8 @@ public class DialogueManager : MonoBehaviour
 
     [SerializeField] private Canvas dialogueCanvas;
     [SerializeField] private TextMeshProUGUI dialogueText;
+
+    [SerializeField] private PlayerController player;
 
     [SerializeField] private List<string> startDialogueTexts = new List<string>();
     [SerializeField] private List<string> endDialogueTexts = new List<string>();
@@ -43,6 +44,8 @@ public class DialogueManager : MonoBehaviour
             {
                 OnDialogueFinished.Invoke(nextSceneName);
             }
+
+            player.ToggleFreezeMovement(false);
             return;
         }
 
@@ -66,6 +69,8 @@ public class DialogueManager : MonoBehaviour
 
         ShowText(currentDialogueText[0]);
         currentText = 1;
+
+        player.ToggleFreezeMovement(true);
     }
 
     public void StartLastDialogue(string sceneName)
@@ -81,5 +86,7 @@ public class DialogueManager : MonoBehaviour
         isLastDialogue = true;
 
         nextSceneName = sceneName;
+
+        player.ToggleFreezeMovement(true);
     }
 }
