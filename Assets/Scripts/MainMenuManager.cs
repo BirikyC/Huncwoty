@@ -1,12 +1,12 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
+    [SerializeField] private SceneFader sceneFader;
+
     public void PlayButton()
     {
-        // Tymczasowo ustawione na SampleScene
-        SceneManager.LoadScene("SampleScene");
+        sceneFader.LoadScene("Level1");
     }
 
     public void SettingsButton()
