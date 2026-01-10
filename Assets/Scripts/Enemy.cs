@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
 
         Physics2D.Raycast(transform.position, (focus_pos - (Vector2)transform.position).normalized);
 
-        tiles = PathFInd.FindPath((Vector2Int)tilemap.WorldToCell(transform.position), (Vector2Int)tilemap.WorldToCell(focus_pos), tilemap, gameObject);
+        tiles = PathFInd.FindPath((Vector2Int)tilemap.WorldToCell(transform.position), (Vector2Int)tilemap.WorldToCell(focus_pos), tilemap);
         if (tiles == null) chase = false; 
         else tile_id = tiles.Count - 1;
 

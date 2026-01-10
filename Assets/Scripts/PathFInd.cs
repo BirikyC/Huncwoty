@@ -22,7 +22,9 @@ public class PathFInd
         }
     }
 
-    public static List<Vector2Int> FindPath(Vector2Int from, Vector2Int to, Tilemap t, GameObject o)
+    static LayerMask obstacleMask = 1 << LayerMask.NameToLayer("Obstacle");
+
+    public static List<Vector2Int> FindPath(Vector2Int from, Vector2Int to, Tilemap t)
     {
         List<Node> open = new List<Node> { new Node(from, MannDist(from, to), 0, null) };
         List<Vector2Int> closed = new();
@@ -49,8 +51,14 @@ public class PathFInd
                 //if ((s.pos - from).sqrMagnitude > 100)
                 if (!bounds.Contains((Vector3Int)s.pos))
                     continue;
-                if (IsBlocked(s.pos, t, o)) 
+                if (IsBlocked(s.pos, t)) 
                     continue;
+                Vector2 diff = t.CellToWorld((Vector3Int)q.pos) - t.CellToWorld((Vector3Int)s.pos);
+                if (Physics2D.Raycast(t.CellToWorld((Vector3Int)q.pos), diff.normalized, diff.magnitude))
+                {
+                    Debug.Log("hit");
+                    continue;
+                }
                 if (closed.Contains(s.pos))
                     continue;
                 /*if (!LowerF(open, s))
@@ -127,15 +135,15 @@ public class PathFInd
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
     }
 
-    static bool IsBlocked(Vector2Int cell, Tilemap tilemap, GameObject omit/*, LayerMask obstacleMask*/)
+    static bool IsBlocked(Vector2Int cell, Tilemap tilemap/*, LayerMask obstacleMask*/)
     {
         Vector3 worldPos = tilemap.GetCellCenterWorld((Vector3Int)cell);
 
         Collider2D c = Physics2D.OverlapPoint(worldPos);
 
-        //return Physics2D.OverlapPoint(worldPos/*, obstacleMask*/) != null;
+        return Physics2D.OverlapPoint(worldPos, obstacleMask) != null;
         //return c != null && c.gameObject != omit;
-        return false;
+        //return false;
     }
 
 }
