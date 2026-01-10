@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     private PlayerRotation rotation;
     private float currentAngle;
 
+    [SerializeField] private NoiseManager noiseManager;
+
     public enum PlayerRotation
     {
         Up, UpRight,
@@ -48,6 +50,8 @@ public class PlayerController : MonoBehaviour
         bool isDown = input.y < -0.5f;
         bool isLeft = input.x < -0.5f;
 
+        noiseManager.MakeNoise(transform.position, 5);
+
         if (isUp && isRight)
             rotation = PlayerRotation.UpRight;
         else if (isRight && isDown)
@@ -80,5 +84,10 @@ public class PlayerController : MonoBehaviour
             PlayerRotation.RightDown => 315f,
             _ => 0f
         };
+    }
+
+    public void OnPause() 
+    {
+        PauseManager.Instance.TogglePause();    
     }
 }
