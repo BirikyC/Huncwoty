@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 input;
     [SerializeField] private float speed = 5.0f;
 
+    [SerializeField] private NoiseManager noiseManager;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -20,5 +22,7 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         input = context.ReadValue<Vector2>();
+        noiseManager.MakeNoise(transform.position, 5.0f);
+        Debug.Log(1);
     }
 }
