@@ -17,11 +17,13 @@ public class SceneFader : MonoBehaviour
 
     private void OnEnable()
     {
+        if (!dialogueManager) return;
         dialogueManager.OnDialogueFinished += HandleDialogueFinished;
     }
 
     private void OnDisable()
     {
+        if (!dialogueManager) return;
         dialogueManager.OnDialogueFinished -= HandleDialogueFinished;
     }
 
@@ -63,7 +65,10 @@ public class SceneFader : MonoBehaviour
         c.a = 0f;
         fadeImage.color = c;
 
-        dialogueManager.StartFirstDialogue();
+        if (dialogueManager != null)
+        {
+            dialogueManager.StartFirstDialogue();
+        }
     }
 
     private IEnumerator FadeOut(string sceneName)

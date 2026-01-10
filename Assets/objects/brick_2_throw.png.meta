@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 225a6be45529a714792d565023eeea00
+guid: a5d2fd17e49c10543b759f0dbd898f19
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1927024700102214762
-    second: can_throw_0
+      213: 4800716039476115331
+    second: brick_2_throw_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: can_throw_0
+      name: brick_2_throw_0
       rect:
         serializedVersion: 2
-        x: 17
-        y: 2
-        width: 91
-        height: 125
+        x: 10
+        y: 10
+        width: 107
+        height: 98
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 69bf00dbe35d145e0800000000000000
-      internalID: -1927024700102214762
+      spriteID: 3877e787dc19f9240800000000000000
+      internalID: 4800716039476115331
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 000cf0ec51af5c34da895ae34ce9b0e6
+    spriteID: 54ab51d51a8a2894ebc618e4cc204831
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      can_throw_0: -1927024700102214762
+      brick_2_throw_0: 4800716039476115331
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
