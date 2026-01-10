@@ -3,37 +3,17 @@ using UnityEngine.InputSystem;
 
 public class PauseManager : MonoBehaviour
 {
-    public static PauseManager Instance { get; private set; }
-
-    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private PauseMenu pauseMenu;
+    [SerializeField] private PlayerController player;
 
     private bool isPaused = false;
 
-    private void Awake()
+    public void OnPause(InputAction.CallbackContext context)
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        if (!context.started) return;
 
-        Instance = this;
-    }
-
-    public void TogglePause()
-    {
         isPaused = !isPaused;
-        //pauseMenu.SetActive(isPaused);
-        Time.timeScale = isPaused ? 0f : 1f;
-    }
-    public void Resume()
-    {
-        if (isPaused) TogglePause();
-    }
-
-    public void Quit()
-    {
-        Application.Quit();
-        Debug.Log("Quit game");
+        pauseMenu.ToggleMenu(isPaused);
+        player.ToggleFreezeMovement(isPaused);
     }
 }

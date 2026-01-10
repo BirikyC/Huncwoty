@@ -9,6 +9,8 @@ public class GameTimer : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI timerText;
 
+    private bool isStopped = false;
+
     private void Start()
     {
         int MINUTE_IN_SECONDS = 60;
@@ -21,6 +23,8 @@ public class GameTimer : MonoBehaviour
 
     void Tick()
     {
+        if(isStopped) return;
+
         currentSeconds -= 1;
 
         if (currentSeconds < 0)
@@ -53,5 +57,15 @@ public class GameTimer : MonoBehaviour
         }
 
         return minutes + ":" + seconds;
+    }
+
+    public void Stop()
+    {
+        isStopped = true;
+    }
+
+    public void Continue()
+    {
+        isStopped = false;
     }
 }
