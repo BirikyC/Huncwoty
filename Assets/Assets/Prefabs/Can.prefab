@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 2640741517445395241, guid: b57beb105817d7f469fce09f3df04746, type: 3}
+  m_Sprite: {fileID: 2640741517445395241, guid: 1b261bd6d9d9bd84aa5ceaa49402d668, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -165,8 +165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da34fb0dbc1fedd4486488d7c7cf0df5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CanController
-  spriteGround: {fileID: 2640741517445395241, guid: b57beb105817d7f469fce09f3df04746, type: 3}
-  spriteThrow: {fileID: -1927024700102214762, guid: 1446554f2cf0cb043aa8582d6dc645ea, type: 3}
+  spriteGround: {fileID: 2640741517445395241, guid: 1b261bd6d9d9bd84aa5ceaa49402d668, type: 3}
+  spriteThrow: {fileID: -1927024700102214762, guid: 225a6be45529a714792d565023eeea00, type: 3}
   maxRange: 10
   throwDuration: 0.6
   throwHeight: 1.5

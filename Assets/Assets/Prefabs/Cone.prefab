@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 7552786543510562683}
   - component: {fileID: 8162194071591457239}
   - component: {fileID: -3613668692331220644}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cone
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
