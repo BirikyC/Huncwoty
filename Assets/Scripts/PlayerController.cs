@@ -6,7 +6,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 input;
     
-    [SerializeField] private float speed = 5.0f;
+    [SerializeField] private float speed = 3.0f;
+    [SerializeField] private float sprintSpeed = 6.0f;
     [SerializeField] private float rotationSpeed = 10.0f;
     private PlayerRotation rotation;
     private float currentAngle;
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private NoiseManager noiseManager;
 
     private bool isFreezedMovement = false;
+    private bool isSprinting = false;
 
     public enum PlayerRotation
     {
@@ -32,7 +34,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!isFreezedMovement)
         {
-            rb.linearVelocity = input * speed;
+            rb.linearVelocity = input * (isSprinting ? sprintSpeed : speed);
 
             float targetAngle = GetRotationAngle();
 
@@ -73,6 +75,18 @@ public class PlayerController : MonoBehaviour
             rotation = PlayerRotation.Down;
         else if (isLeft)
             rotation = PlayerRotation.Left;
+    }
+
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            isSprinting = true;
+        }
+        else if (context.canceled)
+        {
+            isSprinting = false;
+        }
     }
 
     private float GetRotationAngle()
