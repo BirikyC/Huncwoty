@@ -2,8 +2,34 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Tilemaps;
 
-public class PathFInd
+public class PathFInd : MonoBehaviour
 {
+
+    static HashSet<Vector2Int> blockedTiles = new HashSet<Vector2Int>();
+
+    public Tilemap obstacles;
+
+    public static LayerMask OBSTACLE_MASK = 0;
+
+    private void Awake()
+    {
+        BoundsInt bounds = obstacles.cellBounds;
+
+        for (int x = bounds.xMin; x < bounds.xMax; x++)
+        {
+            for (int y = bounds.yMin; y < bounds.yMax; y++)
+            {
+                Vector3Int cell = new Vector3Int(x, y, 0);
+                if (obstacles.HasTile(cell))
+                {
+                    blockedTiles.Add((Vector2Int)cell);
+                    Debug.Log(cell);
+                }
+            }
+        }
+
+        if (OBSTACLE_MASK == 0) OBSTACLE_MASK = 1 << LayerMask.NameToLayer("Obstacle");
+    }
 
     class Node
     {
@@ -22,10 +48,11 @@ public class PathFInd
         }
     }
 
-    static LayerMask obstacleMask = 1 << LayerMask.NameToLayer("Obstacle");
+    //static LayerMask obstacleMask = 1 << LayerMask.NameToLayer("Obstacle");
 
     public static List<Vector2Int> FindPath(Vector2Int from, Vector2Int to, Tilemap t)
     {
+        Debug.Log(from + " to " + to);
         List<Node> open = new List<Node> { new Node(from, MannDist(from, to), 0, null) };
         List<Vector2Int> closed = new();
 
@@ -46,21 +73,24 @@ public class PathFInd
 
             buff = Successors(q, to);
 
-            foreach (Node s in buff) 
+            foreach (Node s in buff)
             {
+                if (closed.Contains(s.pos))
+                    continue;
                 //if ((s.pos - from).sqrMagnitude > 100)
                 if (!bounds.Contains((Vector3Int)s.pos))
                     continue;
-                if (IsBlocked(s.pos, t)) 
+                if (IsBlocked(s.pos, t))
+                {
+                    closed.Add(s.pos);
                     continue;
-                Vector2 diff = t.CellToWorld((Vector3Int)q.pos) - t.CellToWorld((Vector3Int)s.pos);
+                }
+                /*Vector2 diff = t.CellToWorld((Vector3Int)q.pos) - t.CellToWorld((Vector3Int)s.pos);
                 if (Physics2D.Raycast(t.CellToWorld((Vector3Int)q.pos), diff.normalized, diff.magnitude))
                 {
                     Debug.Log("hit");
                     continue;
-                }
-                if (closed.Contains(s.pos))
-                    continue;
+                }*/
                 /*if (!LowerF(open, s))
                     open.Add(s);*/
                 int id = open.FindIndex(n => n.pos == s.pos);
@@ -81,7 +111,7 @@ public class PathFInd
         var path = new List<Vector2Int>();
         Node current = goal;
 
-        while (current != null)
+        while (current.parent != null)
         {
             path.Add(current.pos);
             current = current.parent;
@@ -103,15 +133,6 @@ public class PathFInd
                 min_f = l[i].fCost;
             }
         return min;
-    }
-
-    static bool LowerF(List<Node> l, Node a) 
-    { 
-        foreach (Node a_i in l) 
-        {
-            if (a_i.pos == a.pos && a_i.fCost < a.fCost) return true;
-        }
-        return false;
     }
 
     static Node[] Successors(Node a, Vector2Int to) 
@@ -137,13 +158,15 @@ public class PathFInd
 
     static bool IsBlocked(Vector2Int cell, Tilemap tilemap/*, LayerMask obstacleMask*/)
     {
-        Vector3 worldPos = tilemap.GetCellCenterWorld((Vector3Int)cell);
+        /*Vector3 worldPos = tilemap.GetCellCenterWorld((Vector3Int)cell);
 
         Collider2D c = Physics2D.OverlapPoint(worldPos);
 
-        return Physics2D.OverlapPoint(worldPos, obstacleMask) != null;
+        return Physics2D.OverlapPoint(worldPos, obstacleMask) != null;*/
         //return c != null && c.gameObject != omit;
         //return false;
+        if (blockedTiles.Contains(cell)) Debug.Log("ob");
+        return blockedTiles.Contains(cell);
     }
 
 }

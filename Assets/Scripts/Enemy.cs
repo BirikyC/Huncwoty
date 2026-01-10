@@ -36,24 +36,32 @@ public class Enemy : MonoBehaviour
             Vector2 dir = (worldPos - (Vector2)transform.position).normalized;
             transform.position = (Vector2)transform.position + dir * speed * Time.deltaTime;
 
-            if ((Vector2)transform.position == worldPos)
+            //Debug.Log(tiles[tile_id]);
+            if ((worldPos - (Vector2)transform.position).normalized != dir)
             {
-                --tile_id;
-                chase = tile_id > 0;// tiles.Count;
+                //Debug.Log(tilemap.WorldToCell(transform.position) + " w");
+                ++tile_id;
+                chase = tile_id < tiles.Count;
             }
         }
     }
 
-    public void Notify(Vector2 pos)
+    public void HandleNoise(Vector2 pos)
     {
+        float dist = Vector2.Distance(transform.position, pos);
+        
+        if (dist > hearNoiseRadius) return;
+
         focus_pos = pos;
         chase = true;
 
-        Physics2D.Raycast(transform.position, (focus_pos - (Vector2)transform.position).normalized);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, (focus_pos - (Vector2)transform.position).normalized, dist, PathFInd.OBSTACLE_MASK);
+
+        //Debug.Log("Start: " + (Vector2Int)tilemap.WorldToCell(transform.position));
 
         tiles = PathFInd.FindPath((Vector2Int)tilemap.WorldToCell(transform.position), (Vector2Int)tilemap.WorldToCell(focus_pos), tilemap);
         if (tiles == null) chase = false; 
-        else tile_id = tiles.Count - 1;
+        else tile_id = 0;
 
         Debug.Log(tiles == null);
 
@@ -61,13 +69,25 @@ public class Enemy : MonoBehaviour
         {
             foreach (Vector2Int v in tiles) Debug.Log(v);
             Debug.Log("");
+
+            Color c = Color.green;
+            foreach (Vector2Int v in tiles)
+            {
+                Vector3 w = tilemap.GetCellCenterWorld((Vector3Int)v);
+                Debug.DrawLine(w, Vector3.one * 0.3f, c);
+            }
         }
     }
 
-    private void HandleNoise(Vector2 noisePosition)
+    void OnDrawGizmos()
     {
-        if (Vector2.Distance(transform.position, noisePosition) > hearNoiseRadius) return;
+        if (tiles == null) return;
 
-        Debug.Log(noisePosition);
+        Gizmos.color = Color.green;
+        foreach (Vector2Int c in tiles)
+        {
+            Vector3 w = tilemap.GetCellCenterWorld((Vector3Int)c);
+            Gizmos.DrawWireCube(w, Vector3.one * 0.3f);
+        }
     }
 }
