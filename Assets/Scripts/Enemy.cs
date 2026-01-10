@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Enemy : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class Enemy : MonoBehaviour
     private bool chase = false;
 
     float speed = 1.0f;
+
+    static Tilemap tilemap;
 
     [SerializeField] private NoiseManager noiseManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
