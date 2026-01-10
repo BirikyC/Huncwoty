@@ -4,6 +4,8 @@ public class DirectionArrowController : MonoBehaviour
 {
     [SerializeField] private GoalTrigger target;
 
+    private bool isActive = false;
+
     private void Update()
     {
         if (target == null) return;
@@ -15,5 +17,16 @@ public class DirectionArrowController : MonoBehaviour
         angle += 180f;
 
         transform.rotation = Quaternion.Euler(0, 0, angle);
+        return;
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public bool IsActive()
+    { 
+        return isActive; 
     }
 }
