@@ -13,6 +13,9 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
+        const float START_ZOOM = 7.0f;
+
+        Camera.main.orthographicSize = START_ZOOM;
         targetZoom = Camera.main.orthographicSize;
     }
 
@@ -37,19 +40,17 @@ public class CameraController : MonoBehaviour
     {
         if (!context.started) return;
 
-        const float MIN_ZOOM = 3.0f;
+        const float MIN_ZOOM = 5.0f;
 
         targetZoom = Mathf.Max(MIN_ZOOM, targetZoom - zoomStep);
-        //Camera.main.orthographicSize = Mathf.Max(MIN_ZOOM, Camera.main.orthographicSize);
     }
 
     public void OnZoomOut(InputAction.CallbackContext context)
     {
         if(!context.started) return;
 
-        const float MAX_ZOOM = 7.0f;
+        const float MAX_ZOOM = 9.0f;
 
         targetZoom = Mathf.Min(MAX_ZOOM, targetZoom + zoomStep);
-        //Camera.main.orthographicSize = Mathf.Min(MAX_ZOOM, Camera.main.orthographicSize);
     }
 }

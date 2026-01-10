@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class GoalTrigger : MonoBehaviour
 {
+    [SerializeField] private SceneFader sceneFader;
     [SerializeField] private string nextLevelName;
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -15,6 +16,6 @@ public class GoalTrigger : MonoBehaviour
 
     private void LoadNextLevel()
     {
-        SceneManager.LoadScene(nextLevelName);
+        sceneFader.LoadScene(nextLevelName);
     }
 }
