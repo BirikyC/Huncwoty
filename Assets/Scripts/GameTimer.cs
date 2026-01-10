@@ -1,0 +1,47 @@
+using UnityEngine;
+
+public class GameTimer : MonoBehaviour
+{
+    [SerializeField] private int timeInSeconds = 120;
+    private int currentSeconds;
+    private int currentMinutes;
+
+    private void Start()
+    {
+        int MINUTE_IN_SECONDS = 60;
+
+        currentMinutes = Mathf.FloorToInt(timeInSeconds / MINUTE_IN_SECONDS);
+        currentSeconds = timeInSeconds % MINUTE_IN_SECONDS;
+
+        InvokeRepeating("Tick", 0f, 1f); // tick co sekundê
+    }
+
+    void Tick()
+    {
+        currentSeconds -= 1;
+
+        if (currentSeconds < 0)
+        {
+            currentMinutes -= 1;
+            currentSeconds += 60;
+
+            if(currentMinutes < 0)
+            {
+                Debug.Log("Koniec czasu");
+            }
+        }
+    }
+
+    private string getTimerAsString()
+    {
+        string minutes = currentMinutes.ToString();
+        string seconds = currentSeconds.ToString();
+
+        if(currentSeconds < 10)
+        {
+            seconds = "0" + seconds;
+        }
+
+        return minutes + ":" + seconds;
+    }
+}
