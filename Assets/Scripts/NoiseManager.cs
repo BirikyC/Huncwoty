@@ -6,19 +6,14 @@ public class NoiseManager : MonoBehaviour
     public static event Action<Vector2> OnMadeNoise;
 
     [SerializeField] private PlayerController player;
-    [SerializeField] private float throwRadius = 4.0f;
 
     public void MakeNoiseByRunning()
     {
         OnMadeNoise.Invoke(player.transform.position);
     }
 
-    public void MakeNoiseByThrowing()
+    public void MakeNoiseByThrowing(Vector2 targetPosition)
     {
-        Vector3 direction = player.GetDirection();
-
-        Vector2 noisePosition = player.transform.position + (direction * throwRadius);
-
-        OnMadeNoise.Invoke(noisePosition);
+        OnMadeNoise.Invoke(targetPosition);
     }
 }
