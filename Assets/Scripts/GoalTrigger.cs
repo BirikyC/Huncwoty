@@ -16,6 +16,6 @@ public class GoalTrigger : MonoBehaviour
 
     private void LoadNextLevel()
     {
-        sceneFader.LoadScene(nextLevelName);
+        sceneFader.LoadScene(nextLevelName, true);
     }
 }

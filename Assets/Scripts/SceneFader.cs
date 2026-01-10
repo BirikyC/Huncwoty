@@ -8,12 +8,36 @@ public class SceneFader : MonoBehaviour
     [SerializeField] private Image fadeImage;
     [SerializeField] private float fadeDuration = 0.5f;
 
+    [SerializeField] private DialogueManager dialogueManager;
+
     private void Start()
     {
         StartCoroutine(FadeIn());
     }
 
-    public void LoadScene(string sceneName)
+    private void OnEnable()
+    {
+        dialogueManager.OnDialogueFinished += HandleDialogueFinished;
+    }
+
+    private void OnDisable()
+    {
+        dialogueManager.OnDialogueFinished -= HandleDialogueFinished;
+    }
+
+    public void LoadScene(string sceneName, bool shouldLoadLastDialogue = false)
+    {
+        if (shouldLoadLastDialogue)
+        {
+            dialogueManager.StartLastDialogue(sceneName);
+        }
+        else
+        {
+            StartCoroutine(FadeOut(sceneName));
+        }
+    }
+
+    private void HandleDialogueFinished(string sceneName)
     {
         StartCoroutine(FadeOut(sceneName));
     }
@@ -38,6 +62,8 @@ public class SceneFader : MonoBehaviour
 
         c.a = 0f;
         fadeImage.color = c;
+
+        dialogueManager.StartFirstDialogue();
     }
 
     private IEnumerator FadeOut(string sceneName)

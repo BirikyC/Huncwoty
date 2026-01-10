@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -28,6 +29,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameTimer gameTimer;
     [SerializeField] private DirectionArrowController arrowController;
     [SerializeField] private float arrowDelay = 30.0f;
+
+    private List<CanController> canList = new List<CanController>();
 
     void Start()
     {
@@ -86,7 +89,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!context.started) return;
 
-        Throw();
+        ThrowCan();
     }
 
     private void UpdateCurrentRotationFromAngle()
@@ -113,9 +116,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Throw()
+    private void ThrowCan()
     {
-        noiseManager.MakeNoiseByThrowing();
+        if (canList.Count == 0)
+            return;
+
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        mouseWorldPosition.z = 0f;
+
+        CanController can = canList[canList.Count - 1];
+        canList.RemoveAt(canList.Count - 1);
+
+        can.transform.position = transform.position + new Vector3(0f, 1f, 0f);
+        can.Throw(can.transform.position, mouseWorldPosition);
+
+        noiseManager.MakeNoiseByThrowing(mouseWorldPosition);
+    }
+
+    public void AddCan(CanController can)
+    {
+        canList.Add(can);
     }
 
     public Vector2 GetDirection()
