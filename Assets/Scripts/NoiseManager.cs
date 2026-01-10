@@ -1,35 +1,24 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class NoiseManager : MonoBehaviour
 {
+    public static event Action<Vector2> OnMadeNoise;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    //list of enemies
-    private List<Enemy> enemies = new();
-    
-    void Start()
+    [SerializeField] private PlayerController player;
+    [SerializeField] private float throwRadius = 4.0f;
+
+    public void MakeNoiseByRunning()
     {
-        
+        OnMadeNoise.Invoke(player.transform.position);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void MakeNoiseByThrowing()
     {
-        
-    }
+        Vector3 direction = player.GetDirection();
 
-    public void addEnemy(Enemy e) 
-    {
-        enemies.Add(e);
-    }
+        Vector2 noisePosition = player.transform.position + (direction * throwRadius);
 
-    public void MakeNoise(Vector2 position, float radius) 
-    {
-        foreach (Enemy e in enemies)
-        {
-            float dist = (position - (Vector2)e.transform.position).magnitude;
-            if (dist <= radius) e.Notify(position);
-        }   
+        OnMadeNoise.Invoke(noisePosition);
     }
 }
