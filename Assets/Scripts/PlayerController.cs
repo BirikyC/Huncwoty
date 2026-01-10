@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private NoiseManager noiseManager;
 
+    private bool isFreezedMovement = false;
+
     public enum PlayerRotation
     {
         Up, UpRight,
@@ -28,17 +30,20 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity = input * speed;
+        if (!isFreezedMovement)
+        {
+            rb.linearVelocity = input * speed;
 
-        float targetAngle = GetRotationAngle();
+            float targetAngle = GetRotationAngle();
 
-        currentAngle = Mathf.LerpAngle(
-            currentAngle,
-            targetAngle,
-            rotationSpeed * Time.fixedDeltaTime
-        );
+            currentAngle = Mathf.LerpAngle(
+                currentAngle,
+                targetAngle,
+                rotationSpeed * Time.fixedDeltaTime
+            );
 
-        rb.MoveRotation(currentAngle);
+            rb.MoveRotation(currentAngle);
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -86,8 +91,13 @@ public class PlayerController : MonoBehaviour
         };
     }
 
-    public void OnPause() 
+    public void ToggleFreezeMovement(bool isFreezed)
     {
-        PauseManager.Instance.TogglePause();    
+        isFreezedMovement = isFreezed;
+
+        if(isFreezedMovement)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
     }
 }

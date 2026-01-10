@@ -156,4 +156,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfb448a06c9732f4686318fd572bb511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteRenderOrder
-  rb: {fileID: 0}
+  isStatic: 1
