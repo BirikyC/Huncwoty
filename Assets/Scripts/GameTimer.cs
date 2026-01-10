@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class GameTimer : MonoBehaviour
@@ -5,6 +6,8 @@ public class GameTimer : MonoBehaviour
     [SerializeField] private int timeInSeconds = 120;
     private int currentSeconds;
     private int currentMinutes;
+
+    [SerializeField] private TextMeshProUGUI timerText;
 
     private void Start()
     {
@@ -30,9 +33,16 @@ public class GameTimer : MonoBehaviour
                 Debug.Log("Koniec czasu");
             }
         }
+
+        UpdateTimerText(GetTimerAsString());
     }
 
-    private string getTimerAsString()
+    private void UpdateTimerText(string text)
+    {
+        timerText.text = text;
+    }
+
+    private string GetTimerAsString()
     {
         string minutes = currentMinutes.ToString();
         string seconds = currentSeconds.ToString();
