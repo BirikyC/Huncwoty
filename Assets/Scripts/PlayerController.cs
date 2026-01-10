@@ -1,6 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum PlayerRotation
+{
+    Up, UpRight,
+    Right, RightDown,
+    Down, DownLeft,
+    Left, LeftUp
+}
+
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
@@ -16,14 +24,6 @@ public class PlayerController : MonoBehaviour
 
     private bool isFreezedMovement = false;
     private bool isSprinting = false;
-
-    public enum PlayerRotation
-    {
-        Up, UpRight,
-        Right, RightDown,
-        Down, DownLeft,
-        Left, LeftUp
-    }
 
     void Start()
     {
@@ -45,6 +45,11 @@ public class PlayerController : MonoBehaviour
             );
 
             rb.MoveRotation(currentAngle);
+
+            if (isSprinting)
+            {
+                noiseManager.MakeNoiseByRunning();
+            }
         }
     }
 
@@ -56,8 +61,6 @@ public class PlayerController : MonoBehaviour
         bool isRight = input.x > 0.5f;
         bool isDown = input.y < -0.5f;
         bool isLeft = input.x < -0.5f;
-
-        noiseManager.MakeNoise(transform.position, 5);
 
         if (isUp && isRight)
             rotation = PlayerRotation.UpRight;
@@ -89,6 +92,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (!context.started) return;
+
+        Throw();
+    }
+
     private float GetRotationAngle()
     {
         return rotation switch
@@ -113,5 +123,19 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = Vector2.zero;
         }
+    }
+
+    private void Throw()
+    {
+        noiseManager.MakeNoiseByThrowing();
+    }
+
+    public Vector2 GetDirection()
+    {
+        float angleRad = currentAngle * Mathf.Deg2Rad;
+
+        Vector2 direction = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
+
+        return direction.normalized;
     }
 }

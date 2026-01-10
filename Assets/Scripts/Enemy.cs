@@ -6,21 +6,19 @@ public class Enemy : MonoBehaviour
     private Vector2 focus_pos;
     private bool chase = false;
 
-    float speed = 1.0f;
+    [SerializeField] private float speed = 1.0f;
+    [SerializeField] private float hearNoiseRadius = 5.0f;
 
     static Tilemap tilemap;
 
-    [SerializeField] private NoiseManager noiseManager;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnEnable()
     {
-        noiseManager.addEnemy(this);
+        NoiseManager.OnMadeNoise += HandleNoise;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        NoiseManager.OnMadeNoise -= HandleNoise;
     }
 
     private void FixedUpdate()
@@ -36,5 +34,12 @@ public class Enemy : MonoBehaviour
     {
         focus_pos = pos;
         chase = true;
+    }
+
+    private void HandleNoise(Vector2 noisePosition)
+    {
+        if (Vector2.Distance(transform.position, noisePosition) > hearNoiseRadius) return;
+
+        Debug.Log(noisePosition);
     }
 }
