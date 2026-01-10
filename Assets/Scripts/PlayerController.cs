@@ -3,10 +3,10 @@ using UnityEngine.InputSystem;
 
 public enum PlayerRotation
 {
-    Up, UpRight,
-    Right, RightDown,
-    Down, DownLeft,
-    Left, LeftUp
+    LeftBack, LeftBackStatic,
+    LeftFront, LeftFrontStatic,
+    RightBack, RightBackStatic,
+    RightFront, RightFrontStatic
 }
 
 public class PlayerController : MonoBehaviour
@@ -20,22 +20,20 @@ public class PlayerController : MonoBehaviour
     private float currentAngle;
 
     [SerializeField] private NoiseManager noiseManager;
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Sprite upSprite;
-    [SerializeField] private Sprite upRightSprite;
-    [SerializeField] private Sprite rightSprite;
-    [SerializeField] private Sprite rightDownSprite;
-    [SerializeField] private Sprite downSprite;
-    [SerializeField] private Sprite downLeftSprite;
-    [SerializeField] private Sprite leftSprite;
-    [SerializeField] private Sprite leftUpSprite;
 
     private bool isFreezedMovement = false;
     private bool isSprinting = false;
+    private bool isMoving = false;
+
+    [SerializeField] private GameTimer gameTimer;
+    [SerializeField] private DirectionArrowController arrowController;
+    [SerializeField] private float arrowDelay = 30.0f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        arrowController.gameObject.SetActive(false);
     }
 
     void FixedUpdate()
@@ -44,15 +42,12 @@ public class PlayerController : MonoBehaviour
         
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
-        Debug.Log(mouseWorldPosition);
-
         mouseWorldPosition.z = 0f;
 
         Vector2 direction = (mouseWorldPosition - transform.position).normalized;
         currentAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         UpdateCurrentRotationFromAngle();
-        UpdateSpriteByRotation();
 
         rb.linearVelocity = input * (isSprinting ? sprintSpeed : speed);
 
@@ -60,12 +55,19 @@ public class PlayerController : MonoBehaviour
         {
             noiseManager.MakeNoiseByRunning();
         }
-        
+
+        if(gameTimer.GetPastTime() >= arrowDelay && !arrowController.IsActive())
+        {
+            arrowController.Show();
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
         input = context.ReadValue<Vector2>();
+
+        if(context.started) isMoving = true;
+        else if(context.canceled) isMoving = false;
     }
 
     public void OnSprint(InputAction.CallbackContext context)
@@ -87,46 +89,18 @@ public class PlayerController : MonoBehaviour
         Throw();
     }
 
-    private void UpdateSpriteByRotation()
-    {
-        if (currentRotation == PlayerRotation.Up)
-            spriteRenderer.sprite = upSprite;
-        else if (currentRotation == PlayerRotation.UpRight)
-            spriteRenderer.sprite = upRightSprite;
-        else if (currentRotation == PlayerRotation.Right)
-            spriteRenderer.sprite = rightSprite;
-        else if (currentRotation == PlayerRotation.RightDown)
-            spriteRenderer.sprite = rightDownSprite;
-        else if (currentRotation == PlayerRotation.Down)
-            spriteRenderer.sprite = downSprite;
-        else if (currentRotation == PlayerRotation.DownLeft)
-            spriteRenderer.sprite = downLeftSprite;
-        else if (currentRotation == PlayerRotation.Left)
-            spriteRenderer.sprite = leftSprite;
-        else if (currentRotation == PlayerRotation.LeftUp)
-            spriteRenderer.sprite = leftUpSprite;
-    }
-
     private void UpdateCurrentRotationFromAngle()
     {
         float angle = (currentAngle + 360f) % 360f;
 
-        if (angle >= 337.5f || angle < 22.5f)
-            currentRotation = PlayerRotation.Right;
-        else if (angle >= 22.5f && angle < 67.5f)
-            currentRotation = PlayerRotation.UpRight;
-        else if (angle >= 67.5f && angle < 112.5f)
-            currentRotation = PlayerRotation.Up;
-        else if (angle >= 112.5f && angle < 157.5f)
-            currentRotation = PlayerRotation.LeftUp;
-        else if (angle >= 157.5f && angle < 202.5f)
-            currentRotation = PlayerRotation.Left;
-        else if (angle >= 202.5f && angle < 247.5f)
-            currentRotation = PlayerRotation.DownLeft;
-        else if (angle >= 247.5f && angle < 292.5f)
-            currentRotation = PlayerRotation.Down;
-        else if (angle >= 292.5f && angle < 337.5f)
-            currentRotation = PlayerRotation.RightDown;
+        if (angle >= 0.0f && angle < 90.0f)
+            currentRotation = isMoving ? PlayerRotation.RightBack : PlayerRotation.RightBackStatic;
+        else if (angle >= 90.0f && angle < 180.0f)
+            currentRotation = isMoving ? PlayerRotation.LeftBack : PlayerRotation.LeftBackStatic;
+        else if (angle >= 180.0f && angle < 270.0f)
+            currentRotation = isMoving ? PlayerRotation.LeftFront : PlayerRotation.LeftFrontStatic;
+        else if (angle >= 270.0f && angle < 360.0f)
+            currentRotation = isMoving ? PlayerRotation.RightFront : PlayerRotation.RightFrontStatic;
     }
 
     public void ToggleFreezeMovement(bool isFreezed)
@@ -153,8 +127,18 @@ public class PlayerController : MonoBehaviour
         return direction.normalized;
     }
 
+    public PlayerRotation GetCurrentRotation()
+    {
+        return currentRotation;
+    }
+
     public float GetCurrentAngle()
     {
         return currentAngle;
+    }
+
+    public bool IsMoving()
+    {
+        return isMoving;
     }
 }

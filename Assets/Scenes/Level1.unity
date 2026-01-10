@@ -316,7 +316,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 163a37261f2d186488d620d345e6a5fd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 2.25
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 163a37261f2d186488d620d345e6a5fd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1100,15 +1100,9 @@ MonoBehaviour:
   speed: 3.5
   sprintSpeed: 6
   noiseManager: {fileID: 1438585177}
-  spriteRenderer: {fileID: 1446574976}
-  upSprite: {fileID: 7482667652216324306, guid: e733f092b43ffc449868908f03cfab04, type: 3}
-  upRightSprite: {fileID: 7482667652216324306, guid: 2cda8cfdbb4ba2a4ab019e103962b0a8, type: 3}
-  rightSprite: {fileID: 7482667652216324306, guid: 50540b4646cefb34789dd830649bdf9e, type: 3}
-  rightDownSprite: {fileID: 7482667652216324306, guid: c405b020e372b2c4fb6a80bbf7e3a335, type: 3}
-  downSprite: {fileID: 7482667652216324306, guid: 1d51f88cdd9c66b4893d3ec006661fc1, type: 3}
-  downLeftSprite: {fileID: 7482667652216324306, guid: 5b1421d09a4892542b60ca21b7889c55, type: 3}
-  leftSprite: {fileID: 7482667652216324306, guid: 4a85afdd46103c74c9f45b7d0397f28c, type: 3}
-  leftUpSprite: {fileID: 7482667652216324306, guid: 5256268056c16de4ea64bedddf0dee5d, type: 3}
+  gameTimer: {fileID: 1951866807}
+  arrowController: {fileID: 401300216}
+  arrowDelay: 30
 --- !u!50 &913662427
 Rigidbody2D:
   serializedVersion: 5
@@ -1704,6 +1698,7 @@ GameObject:
   - component: {fileID: 1446574975}
   - component: {fileID: 1446574976}
   - component: {fileID: 1446574977}
+  - component: {fileID: 1446574978}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -1775,7 +1770,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -289970935381407519, guid: 31012591e4e664643b680f56ac00ebd0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1798,6 +1793,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteRenderOrder
   isStatic: 0
+--- !u!114 &1446574978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446574974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa52233effff33f489e0f27b8fca9d41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpriteAnimation
+  player: {fileID: 913662426}
+  spriteRenderer: {fileID: 1446574976}
+  leftBackFrames:
+  - {fileID: -9102733847578195453, guid: f358eb7ecdffcdc4c84b83f37f098700, type: 3}
+  - {fileID: -7891175431401564307, guid: 59e0cb1b09c717a4f82d76f2d6002ed6, type: 3}
+  - {fileID: -5679114761235660049, guid: 4a5d545c974875f48840f2681698531e, type: 3}
+  - {fileID: 2747353627419757720, guid: 9ffe29f787566cd4dae9a412ba4f8185, type: 3}
+  leftBackStaticFrames:
+  - {fileID: -4739773121946262508, guid: 8aba49e9a64ea3d498e25d7bd4419612, type: 3}
+  leftFrontFrames:
+  - {fileID: 3368447711302588872, guid: cae2f2c645027554f912db08d61e0e71, type: 3}
+  - {fileID: 7639218806159209555, guid: 7819867db5b404c40ac4f1f80c176b23, type: 3}
+  - {fileID: -8504283243894649718, guid: 280710b48ec4ae64693edc986e9be5ba, type: 3}
+  - {fileID: 5299332768117608319, guid: bc2211da4754fc74cb6384bafd7de65d, type: 3}
+  leftFrontStaticFrames:
+  - {fileID: 4099066761636349190, guid: 70e86f02db8390c4c9a26426316e4c0c, type: 3}
+  rightBackFrames:
+  - {fileID: 28128147278310427, guid: 3c00f070338a826498b1189a84e11f62, type: 3}
+  - {fileID: -2415127522626445486, guid: 1051dff7c620080448ef9ea521899088, type: 3}
+  - {fileID: -6648961904354587171, guid: 48d080cbedbd1c540b38bd704de44fc1, type: 3}
+  - {fileID: 724546131652058043, guid: 25106099532c2d54ea5ad9896fb8b4e8, type: 3}
+  rightBackStaticFrames:
+  - {fileID: 2477763950865685677, guid: ff439915ea689894291a587708b785b6, type: 3}
+  rightFrontFrames:
+  - {fileID: -3569463373710357017, guid: fd3ec9b0fd1a4d44b9d54d8223287f1c, type: 3}
+  - {fileID: 738714152823909395, guid: e933e6f1785b26441b6fdefa94877540, type: 3}
+  - {fileID: 8975023501084854750, guid: 2ea2b75485ad11548b7b92ea3047d0e4, type: 3}
+  - {fileID: -7475651640833149681, guid: ac78c1277ed30834da9bbc5d036fa274, type: 3}
+  rightFrontStaticFrames:
+  - {fileID: 1458481431990644235, guid: 25dc0ff9136e0e040b5e3d6e40217b67, type: 3}
+  idleFrames:
+  - {fileID: -289970935381407519, guid: 31012591e4e664643b680f56ac00ebd0, type: 3}
+  frameRate: 4
 --- !u!1001 &1455053049
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -59,6 +59,11 @@ public class GameTimer : MonoBehaviour
         return minutes + ":" + seconds;
     }
 
+    public float GetPastTime()
+    {
+        return timeInSeconds - (currentMinutes * 60) - currentSeconds;
+    }
+
     public void Stop()
     {
         isStopped = true;
