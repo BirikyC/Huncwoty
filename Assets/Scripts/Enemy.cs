@@ -12,8 +12,8 @@ public class Enemy : MonoBehaviour
 
     public /*static*/ Tilemap tilemap;
 
-    List<Vector2Int> tiles = null;
-    int tile_id = 0;
+    List<Vector2> points = null;
+    int point_id = 0;
 
     void OnEnable()
     {
@@ -29,19 +29,13 @@ public class Enemy : MonoBehaviour
     {
         if (chase) 
         {
-            //Vector2 dir = (focus_pos - (Vector2)transform.position).normalized;
-            //transform.position = (Vector2)transform.position + dir * speed * Time.deltaTime;
-
-            Vector2 worldPos = tilemap.CellToWorld(new Vector3Int(tiles[tile_id].x, tiles[tile_id].y, 0));
-            Vector2 dir = (worldPos - (Vector2)transform.position).normalized;
+            Vector2 dir = (points[point_id] - (Vector2)transform.position).normalized;
             transform.position = (Vector2)transform.position + dir * speed * Time.deltaTime;
 
-            //Debug.Log(tiles[tile_id]);
-            if ((worldPos - (Vector2)transform.position).normalized != dir)
+            if ((points[point_id] - (Vector2)transform.position).normalized != dir) // Point overshot
             {
-                //Debug.Log(tilemap.WorldToCell(transform.position) + " w");
-                ++tile_id;
-                chase = tile_id < tiles.Count;
+                ++point_id;
+                chase = point_id < points.Count;
             }
         }
     }
@@ -52,42 +46,49 @@ public class Enemy : MonoBehaviour
         
         if (dist > hearNoiseRadius) return;
 
+        chase = false;
+
         focus_pos = pos;
-        chase = true;
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, (focus_pos - (Vector2)transform.position).normalized, dist, PathFInd.OBSTACLE_MASK);
 
-        //Debug.Log("Start: " + (Vector2Int)tilemap.WorldToCell(transform.position));
+        Gizmos.color = Color.green;
 
-        tiles = PathFInd.FindPath((Vector2Int)tilemap.WorldToCell(transform.position), (Vector2Int)tilemap.WorldToCell(focus_pos), tilemap);
-        if (tiles == null) chase = false; 
-        else tile_id = 0;
-
-        Debug.Log(tiles == null);
-
-        if (tiles != null)
+        if (!hit)
         {
-            foreach (Vector2Int v in tiles) Debug.Log(v);
-            Debug.Log("");
-
-            Color c = Color.green;
-            foreach (Vector2Int v in tiles)
-            {
-                Vector3 w = tilemap.GetCellCenterWorld((Vector3Int)v);
-                Debug.DrawLine(w, Vector3.one * 0.3f, c);
-            }
+            points = new List<Vector2> { pos };
+            Debug.Log(PathFInd.OBSTACLE_MASK);
+            chase = true;
+            point_id = 0;
+            return;
         }
+
+        points = PathFInd.FindPath(transform.position, focus_pos, tilemap);
+
+        if (points == null) chase = false;
+        else
+        {
+            point_id = 0;
+            chase = true;
+        }
+
     }
 
     void OnDrawGizmos()
     {
-        if (tiles == null) return;
+        if (points == null) return;
 
         Gizmos.color = Color.green;
-        foreach (Vector2Int c in tiles)
+
+        if (points.Count == 1)
         {
-            Vector3 w = tilemap.GetCellCenterWorld((Vector3Int)c);
-            Gizmos.DrawWireCube(w, Vector3.one * 0.3f);
+            Gizmos.DrawLine(transform.position, points[0]);
+            return;
+        }
+
+        foreach (Vector2 c in points)
+        {
+            Gizmos.DrawWireCube(c, Vector3.one * 0.3f);
         }
     }
 }

@@ -48,10 +48,10 @@ public class PathFInd : MonoBehaviour
         }
     }
 
-    //static LayerMask obstacleMask = 1 << LayerMask.NameToLayer("Obstacle");
-
-    public static List<Vector2Int> FindPath(Vector2Int from, Vector2Int to, Tilemap t)
+    public static List<Vector2> FindPath(Vector2 from_p, Vector2 to_p, Tilemap t)
     {
+        Vector2Int from = (Vector2Int)t.WorldToCell(from_p), to = (Vector2Int)t.WorldToCell(to_p);
+
         Debug.Log(from + " to " + to);
         List<Node> open = new List<Node> { new Node(from, MannDist(from, to), 0, null) };
         List<Vector2Int> closed = new();
@@ -67,7 +67,7 @@ public class PathFInd : MonoBehaviour
             int min_id = MinF(open);
             Node q = open[min_id];
 
-            if (q.pos == to) return ReconstructPath(q);
+            if (q.pos == to) return ReconstructPath(q, t);
 
             open.RemoveAt(min_id);
 
@@ -75,24 +75,13 @@ public class PathFInd : MonoBehaviour
 
             foreach (Node s in buff)
             {
-                if (closed.Contains(s.pos))
-                    continue;
-                //if ((s.pos - from).sqrMagnitude > 100)
                 if (!bounds.Contains((Vector3Int)s.pos))
                     continue;
                 if (IsBlocked(s.pos, t))
-                {
-                    closed.Add(s.pos);
                     continue;
-                }
-                /*Vector2 diff = t.CellToWorld((Vector3Int)q.pos) - t.CellToWorld((Vector3Int)s.pos);
-                if (Physics2D.Raycast(t.CellToWorld((Vector3Int)q.pos), diff.normalized, diff.magnitude))
-                {
-                    Debug.Log("hit");
+                if (closed.Contains(s.pos))
                     continue;
-                }*/
-                /*if (!LowerF(open, s))
-                    open.Add(s);*/
+
                 int id = open.FindIndex(n => n.pos == s.pos);
                 if (id == -1)
                     open.Add(s);
@@ -106,14 +95,14 @@ public class PathFInd : MonoBehaviour
         return null;
     }
 
-    static List<Vector2Int> ReconstructPath(Node goal)
+    static List<Vector2> ReconstructPath(Node goal, Tilemap t)
     {
-        var path = new List<Vector2Int>();
+        List<Vector2> path = new();
         Node current = goal;
 
         while (current.parent != null)
         {
-            path.Add(current.pos);
+            path.Add(t.CellToWorld((Vector3Int)current.pos));
             current = current.parent;
         }
 
@@ -156,15 +145,8 @@ public class PathFInd : MonoBehaviour
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
     }
 
-    static bool IsBlocked(Vector2Int cell, Tilemap tilemap/*, LayerMask obstacleMask*/)
+    static bool IsBlocked(Vector2Int cell, Tilemap tilemap)
     {
-        /*Vector3 worldPos = tilemap.GetCellCenterWorld((Vector3Int)cell);
-
-        Collider2D c = Physics2D.OverlapPoint(worldPos);
-
-        return Physics2D.OverlapPoint(worldPos, obstacleMask) != null;*/
-        //return c != null && c.gameObject != omit;
-        //return false;
         if (blockedTiles.Contains(cell)) Debug.Log("ob");
         return blockedTiles.Contains(cell);
     }
