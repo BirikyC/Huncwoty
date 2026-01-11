@@ -75,6 +75,8 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        if (chase && ((Vector2)player.transform.position - points[points.Count - 1]).magnitude < 0.5f) return;
+
         Vector2 dir = (player.transform.position - transform.position);
         float dist = dir.magnitude;
 
@@ -132,7 +134,7 @@ public class Enemy : MonoBehaviour
 
         float dist = Vector2.Distance(transform.position, target);
 
-        if (dist < 0.1f)
+        if (dist < 0.5f)
         {
             point_id++;
             if (point_id >= points.Count)
