@@ -42,6 +42,16 @@ public class PlayerController : MonoBehaviour
         arrowController.gameObject.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        gameTimer.OnEndTime += HandleEndTime;
+    }
+
+    private void OnDisable()
+    {
+        gameTimer.OnEndTime -= HandleEndTime;
+    }
+
     void FixedUpdate()
     {
         if (isFreezedMovement) return;
@@ -171,5 +181,10 @@ public class PlayerController : MonoBehaviour
     public bool IsMoving()
     {
         return isMoving;
+    }
+
+    private void HandleEndTime()
+    {
+        OnDied.Invoke();
     }
 }

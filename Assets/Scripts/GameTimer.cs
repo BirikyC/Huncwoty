@@ -1,8 +1,11 @@
 using TMPro;
 using UnityEngine;
+using System;
 
 public class GameTimer : MonoBehaviour
 {
+    public event Action OnEndTime;
+
     [SerializeField] private int timeInSeconds = 120;
     private int currentSeconds;
     private int currentMinutes;
@@ -34,7 +37,7 @@ public class GameTimer : MonoBehaviour
 
             if(currentMinutes < 0)
             {
-                Debug.Log("Koniec czasu");
+                OnEndTime.Invoke();
             }
         }
 
