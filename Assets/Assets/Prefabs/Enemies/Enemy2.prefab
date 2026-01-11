@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteRenderOrder
   isStatic: 0
+  offset: 0
 --- !u!114 &1167566793354050324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,8 +173,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   speed: 9
-  partolSpeed: 3
+  patrolSpeed: 3
   hearNoiseRadius: 5
+  viewRadius: 4
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 0
   afterChaseCooldown: 1
   tilemap: {fileID: 0}
   defaultPath: []
