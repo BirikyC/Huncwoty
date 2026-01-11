@@ -67,10 +67,12 @@ public class GameTimer : MonoBehaviour
     public void Stop()
     {
         isStopped = true;
+        Time.timeScale = 0f;
     }
 
     public void Continue()
     {
         isStopped = false;
+        Time.timeScale = 1f;
     }
 }
