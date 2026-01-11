@@ -422,6 +422,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 411351205}
   m_CullTransparentMesh: 1
+--- !u!1839735485 &432292301 stripped
+Tilemap:
+  m_CorrespondingSourceObject: {fileID: 5148620987905844103, guid: 3ba0a598cec438d4792b275b14fadee0, type: 3}
+  m_PrefabInstance: {fileID: 1455053049}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3093,6 +3098,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6086171054225035412, guid: 72888a60ef9af33468960ccdcc266f01, type: 3}
+      propertyPath: tilemap
+      value: 
+      objectReference: {fileID: 432292301}
     - target: {fileID: 7261709718868939957, guid: 72888a60ef9af33468960ccdcc266f01, type: 3}
       propertyPath: m_Name
       value: Enemy1
