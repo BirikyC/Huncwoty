@@ -6,12 +6,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void PlayButton()
     {
-        sceneFader.LoadScene("Level1");
-    }
-
-    public void SettingsButton()
-    {
-
+        sceneFader.LoadScene("Level2");
     }
 
     public void QuitButton()
