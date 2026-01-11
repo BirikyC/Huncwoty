@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9019391108975637228}
   - component: {fileID: 1011677149202075002}
   - component: {fileID: 8511318539070296928}
+  - component: {fileID: 1167566793354050324}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -3802486809743526710, guid: 2a4dc3dd7e5eb7a4bbdbf4fbac94088d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -105,6 +106,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteRenderOrder
   isStatic: 0
+--- !u!114 &1167566793354050324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3367732040334615441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4514db6ef2e3ce46a0bbc7008c049ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterSpriteAnimation
+  spriteRenderer: {fileID: 1011677149202075002}
+  frames:
+  - {fileID: -3802486809743526710, guid: 2a4dc3dd7e5eb7a4bbdbf4fbac94088d, type: 3}
+  - {fileID: 6440377934623624438, guid: 7fa274208b6e52b449cd68db3d413efd, type: 3}
+  - {fileID: -580974095579223542, guid: 0b98fcaa282d1504ea4957300d3e1794, type: 3}
+  frameRate: 4
 --- !u!1 &7261709718868939957
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,10 +134,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1290802938609287380}
   - component: {fileID: 6086171054225035412}
-  - component: {fileID: 7686719079639081970}
+  - component: {fileID: 8851032707193990430}
   - component: {fileID: 998720124190844685}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,14 +171,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ec12cdde77833c4586677a8a406b9f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  avoidDistance: 1
-  obstacleCheckDistance: 0.8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  speed: 5
+  speed: 9
   hearNoiseRadius: 5
---- !u!61 &7686719079639081970
+  tilemap: {fileID: 0}
+--- !u!61 &8851032707193990430
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -193,7 +208,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.008173108, y: 0.23378113}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -203,7 +218,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.2764118, y: 0.7776404}
   m_EdgeRadius: 0
 --- !u!50 &998720124190844685
 Rigidbody2D:
