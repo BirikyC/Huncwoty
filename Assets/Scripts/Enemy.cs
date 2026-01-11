@@ -5,11 +5,16 @@ using System.Collections.Generic;
 public class Enemy : MonoBehaviour
 {
     private Vector2 focus_pos;
+    private Vector2 lastSeenPlayerPos;
     private bool chase = false;
+    private bool seesPlayer = false;
 
     [SerializeField] private float speed = 5.0f;
-    [SerializeField] private float partolSpeed = 3.0f;
+    [SerializeField] private float patrolSpeed = 3.0f;
     [SerializeField] private float hearNoiseRadius = 5.0f;
+
+    [SerializeField] private float viewRadius = 6f;
+    [SerializeField] private LayerMask playerMask;
 
     [SerializeField] private float afterChaseCooldown = 1.0f;
     private float cooldownTimer = 0f;
@@ -44,6 +49,8 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        CheckVision();
+
         if (chase)
         {
             ChaseMovement();
@@ -52,6 +59,60 @@ public class Enemy : MonoBehaviour
         {
             PatrolMovement();
         }
+    }
+
+    void CheckVision()
+    {
+        Collider2D player = Physics2D.OverlapCircle(
+            transform.position,
+            viewRadius,
+            playerMask
+        );
+
+        if (!player)
+        {
+            seesPlayer = false;
+            return;
+        }
+
+        Vector2 dir = (player.transform.position - transform.position);
+        float dist = dir.magnitude;
+
+        RaycastHit2D hit = Physics2D.Raycast(
+            transform.position,
+            dir.normalized,
+            dist,
+            PathFInd.OBSTACLE_MASK
+        );
+
+        if (hit)
+        {
+            seesPlayer = false;
+            return;
+        }
+
+        seesPlayer = true;
+        lastSeenPlayerPos = player.transform.position;
+
+        StartChase(lastSeenPlayerPos);
+    }
+
+    void StartChase(Vector2 target)
+    {
+        inCooldown = false;
+        focus_pos = target;
+
+        List<Vector2> newPath = PathFInd.FindPath(
+            transform.position,
+            focus_pos,
+            tilemap
+        );
+
+        if (newPath == null) return;
+
+        points = newPath;
+        point_id = 0;
+        chase = true;
     }
 
     void ChaseMovement()
@@ -82,7 +143,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
     void PatrolMovement()
     {
         if (defaultPath == null || defaultPath.Length == 0)
@@ -91,7 +151,7 @@ public class Enemy : MonoBehaviour
         Transform target = defaultPath[currentPointOnDefaultPath];
         Vector2 dir = ((Vector2)target.position - (Vector2)transform.position).normalized;
 
-        transform.position = (Vector2)transform.position + dir * partolSpeed * Time.deltaTime;
+        transform.position = (Vector2)transform.position + dir * patrolSpeed * Time.deltaTime;
 
         float dist = Vector2.Distance(transform.position, target.position);
 
