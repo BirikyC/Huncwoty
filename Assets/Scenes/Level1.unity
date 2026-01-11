@@ -2088,15 +2088,15 @@ PrefabInstance:
       objectReference: {fileID: 930876647}
     - target: {fileID: 2638288788731784612, guid: 3ba0a598cec438d4792b275b14fadee0, type: 3}
       propertyPath: m_TileObjectToInstantiateArray.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2638288788731784612, guid: 3ba0a598cec438d4792b275b14fadee0, type: 3}
       propertyPath: m_TileObjectToInstantiateArray.Array.data[0].m_Data
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3798532520639670818, guid: b3de7420697b53641b8ce5ea781295b2, type: 3}
     - target: {fileID: 2638288788731784612, guid: 3ba0a598cec438d4792b275b14fadee0, type: 3}
       propertyPath: m_TileObjectToInstantiateArray.Array.data[0].m_RefCount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2638288788731784612, guid: 3ba0a598cec438d4792b275b14fadee0, type: 3}
       propertyPath: m_Tiles.Array.data[479].second.m_TileObjectToInstantiateIndex
