@@ -92,6 +92,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caab50f1d134f2b4b890a451b3bf5ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GoalTrigger
+  sceneFader: {fileID: 0}
+  nextLevelName: 
 --- !u!1 &8505243285478483563
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,8 +175,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.3686158, g: 0.3679244, b: 1, a: 1}
+  m_Sprite: {fileID: 668471003112192950, guid: 15205c60eddcddb44b2e75fe17c52913, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
