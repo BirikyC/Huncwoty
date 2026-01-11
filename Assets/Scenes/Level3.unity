@@ -1609,7 +1609,7 @@ PrefabInstance:
       objectReference: {fileID: 707460540}
     - target: {fileID: 8708140085391585078, guid: 3418287f6a7065e42ba77bad598fa4a2, type: 3}
       propertyPath: nextLevelName
-      value: Level3
+      value: MainMenu
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2521,12 +2521,12 @@ MonoBehaviour:
   player: {fileID: 913662426}
   gameTimer: {fileID: 1951866807}
   startDialogueTexts:
-  - Cholera
-  - To jeszcze nie koniec...
+  - "Oby to by\u0142 ostatni"
+  - "Wi\u0119cej mentalnie nie uci\u0105gn\u0119"
   endDialogueTexts:
-  - test3
-  - test4
-  - test5
+  - Less Goo
+  - Ja to jednak jestem gitem
+  - Uff....
   dieDialogueTexts:
   - O nie...
   - No to ff
