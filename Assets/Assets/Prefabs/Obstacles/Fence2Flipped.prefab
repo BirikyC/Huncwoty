@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8162194071591457239}
   - component: {fileID: -3613668692331220644}
   m_Layer: 6
-  m_Name: Small2Flipped
+  m_Name: Fence2Flipped
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -8525373491610151290, guid: e5a27653736e7bd40b115d7d55d79ce5, type: 3}
+  m_Sprite: {fileID: 7671107338355465522, guid: 12f74a69d553baf46ba6748e4974a8dc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -132,7 +132,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 6.45, y: 7.87}
+    oldSize: {x: 2.37, y: 2.35}
     newSize: {x: 2.34, y: 2.02}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -140,10 +140,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.882452, y: 3.153513}
-      - {x: -3.2008138, y: 1.5973153}
-      - {x: -0.7744882, y: 0.12654757}
-      - {x: 2.735894, y: 2.2098088}
+    - - {x: 0.0052853078, y: 0.69501567}
+      - {x: -0.9142342, y: 0.27200565}
+      - {x: -0.83234197, y: 0.17657813}
+      - {x: 0.9571086, y: 1.019002}
+      - {x: 0.88593507, y: 1.0945618}
   m_UseDelaunayMesh: 0
 --- !u!114 &8162194071591457239
 MonoBehaviour:
@@ -158,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteRenderOrder
   isStatic: 1
-  offset: -1.25
+  offset: 0
 --- !u!114 &-3613668692331220644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,8 +195,8 @@ MonoBehaviour:
   m_ShadowMesh:
     m_Mesh: {fileID: 0}
     m_LocalBounds:
-      m_Center: {x: -0.22266388, y: 1.6437073, z: 0}
-      m_Extent: {x: 2.7513046, y: 1.4005585, z: 0}
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0, y: 0, z: 0}
     m_EdgeProcessing: 1
     m_TrimEdge: 0.1
     m_FlipX: 0
