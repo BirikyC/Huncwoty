@@ -5,6 +5,7 @@ public class SpriteRenderOrder : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     [SerializeField] private bool isStatic = false;
+    [SerializeField] private float offset = 0f;
     private const int DEFAULT_ORDER = 1000;
     void Start()
     {
@@ -22,6 +23,6 @@ public class SpriteRenderOrder : MonoBehaviour
 
     private void SetOrder()
     {
-        spriteRenderer.sortingOrder = DEFAULT_ORDER + Mathf.FloorToInt(-transform.position.y * 10);
+        spriteRenderer.sortingOrder = DEFAULT_ORDER + Mathf.FloorToInt((-transform.position.y + offset) * 10);
     }
 }
