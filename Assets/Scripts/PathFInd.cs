@@ -23,7 +23,7 @@ public class PathFInd : MonoBehaviour
                 if (obstacles.HasTile(cell))
                 {
                     blockedTiles.Add((Vector2Int)cell);
-                    Debug.Log(cell);
+                    //Debug.Log(cell);
                 }
             }
         }
@@ -52,13 +52,11 @@ public class PathFInd : MonoBehaviour
     {
         Vector2Int from = (Vector2Int)t.WorldToCell(from_p), to = (Vector2Int)t.WorldToCell(to_p);
 
-        Debug.Log(from + " to " + to);
+        //Debug.Log(from + " to " + to);
         List<Node> open = new List<Node> { new Node(from, MannDist(from, to), 0, null) };
         List<Vector2Int> closed = new();
 
         Node[] buff;// = new Node[4];
-
-        int max_dist = 10;
 
         BoundsInt bounds = t.cellBounds;
 

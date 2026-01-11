@@ -1,119 +1,3 @@
-//using UnityEngine;
-//using UnityEngine.Tilemaps;
-
-//public class Enemy : MonoBehaviour
-//{
-//    private Rigidbody2D rb;
-
-//    [SerializeField] private float avoidDistance = 1.0f;
-//    [SerializeField] private float obstacleCheckDistance = 0.8f;
-//    [SerializeField] private LayerMask obstacleLayer;
-
-//    [SerializeField] private float speed = 5.0f;
-//    [SerializeField] private float hearNoiseRadius = 5.0f;
-
-//    private bool isChasing = false;
-//    private bool isAvoidingObstacle = false;
-//    private Vector2 avoidDirection;
-//    private Vector3 targetPosition;
-
-//    private void Start()
-//    {
-//        rb = GetComponent<Rigidbody2D>();
-//    }
-
-//    void OnEnable()
-//    {
-//        NoiseManager.OnMadeNoise += HandleNoise;
-//    }
-
-//    private void OnDisable()
-//    {
-//        NoiseManager.OnMadeNoise -= HandleNoise;
-//    }
-
-//    private void FixedUpdate()
-//    {
-//        if (!isChasing) return;
-
-//        Vector2 toTarget = (targetPosition - transform.position).normalized;
-
-//        if (!isAvoidingObstacle)
-//        {
-//            if (IsObstacleAhead(toTarget))
-//            {
-//                StartAvoiding(toTarget);
-//            }
-//            else
-//            {
-//                rb.linearVelocity = toTarget * speed;
-//            }
-//        }
-//        else
-//        {
-//            rb.linearVelocity = avoidDirection * speed;
-
-//            if (!IsObstacleAhead(toTarget))
-//            {
-//                isAvoidingObstacle = false;
-//            }
-//        }
-
-//        if (Vector2.Distance(transform.position, targetPosition) < 0.1f)
-//        {
-//            Stop();
-//        }
-//    }
-
-
-//    private void HandleNoise(Vector2 noisePosition)
-//    {
-//        if (Vector2.Distance(transform.position, noisePosition) > hearNoiseRadius) return;
-
-//        targetPosition = noisePosition;
-//        isChasing = true;
-//    }
-
-//    private void Stop()
-//    {
-//        isChasing = false;
-//        rb.linearVelocity = Vector2.zero;
-//    }
-
-//    private bool IsObstacleAhead(Vector2 direction)
-//    {
-//        RaycastHit2D hit = Physics2D.Raycast(
-//            transform.position,
-//            direction,
-//            obstacleCheckDistance,
-//            obstacleLayer
-//        );
-
-//        return hit.collider != null;
-//    }
-
-//    private void StartAvoiding(Vector2 toTarget)
-//    {
-//        isAvoidingObstacle = true;
-
-//        Vector2 left = new Vector2(-toTarget.y, toTarget.x);
-//        Vector2 right = new Vector2(toTarget.y, -toTarget.x);
-
-//        float leftScore = Vector2.Distance(
-//            (Vector2)transform.position + left,
-//            targetPosition
-//        );
-
-//        float rightScore = Vector2.Distance(
-//            (Vector2)transform.position + right,
-//            targetPosition
-//        );
-
-//        avoidDirection = leftScore < rightScore ? left : right;
-//    }
-
-//}
-
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
@@ -123,10 +7,17 @@ public class Enemy : MonoBehaviour
     private Vector2 focus_pos;
     private bool chase = false;
 
-    [SerializeField] private float speed = 1.0f;
+    [SerializeField] private float speed = 5.0f;
+    [SerializeField] private float partolSpeed = 3.0f;
     [SerializeField] private float hearNoiseRadius = 5.0f;
 
-    public /*static*/ Tilemap tilemap;
+    [SerializeField] private float afterChaseCooldown = 1.0f;
+    private float cooldownTimer = 0f;
+    private bool inCooldown = false;
+
+    public Tilemap tilemap;
+    [SerializeField] private Transform[] defaultPath;
+    private int currentPointOnDefaultPath = 0;
 
     List<Vector2> points = null;
     int point_id = 0;
@@ -143,21 +34,76 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (inCooldown)
+        {
+            cooldownTimer -= Time.deltaTime;
+            if (cooldownTimer <= 0f)
+            {
+                inCooldown = false;
+            }
+            return;
+        }
+
         if (chase)
         {
-            Vector2 dir = (points[point_id] - (Vector2)transform.position).normalized;
-            transform.position = (Vector2)transform.position + dir * speed * Time.deltaTime;
+            ChaseMovement();
+        }
+        else
+        {
+            PatrolMovement();
+        }
+    }
 
-            if ((points[point_id] - (Vector2)transform.position).normalized != dir) // Point overshot
+    void ChaseMovement()
+    {
+        if (points == null || point_id >= points.Count)
+        {
+            chase = false;
+            StartCooldown();
+            return;
+        }
+
+        Vector2 target = points[point_id];
+        Vector2 pos = transform.position;
+
+        Vector2 dir = (target - pos).normalized;
+        transform.position = pos + dir * speed * Time.deltaTime;
+
+        float dist = Vector2.Distance(transform.position, target);
+
+        if (dist < 0.1f)
+        {
+            point_id++;
+            if (point_id >= points.Count)
             {
-                ++point_id;
-                chase = point_id < points.Count;
+                chase = false;
+                StartCooldown();
             }
+        }
+    }
+
+
+    void PatrolMovement()
+    {
+        if (defaultPath == null || defaultPath.Length == 0)
+            return;
+
+        Transform target = defaultPath[currentPointOnDefaultPath];
+        Vector2 dir = ((Vector2)target.position - (Vector2)transform.position).normalized;
+
+        transform.position = (Vector2)transform.position + dir * partolSpeed * Time.deltaTime;
+
+        float dist = Vector2.Distance(transform.position, target.position);
+
+        if (dist < 0.1f) // dotar³ do punktu
+        {
+            currentPointOnDefaultPath = (currentPointOnDefaultPath + 1) % defaultPath.Length;
         }
     }
 
     public void HandleNoise(Vector2 pos)
     {
+        inCooldown = false;
         float dist = Vector2.Distance(transform.position, pos);
 
         if (dist > hearNoiseRadius) return;
@@ -173,7 +119,7 @@ public class Enemy : MonoBehaviour
         if (!hit)
         {
             points = new List<Vector2> { pos };
-            Debug.Log(PathFInd.OBSTACLE_MASK);
+            //Debug.Log(PathFInd.OBSTACLE_MASK);
             chase = true;
             point_id = 0;
             return;
@@ -186,8 +132,8 @@ public class Enemy : MonoBehaviour
         {
             point_id = 0;
             chase = true;
+            currentPointOnDefaultPath = 0;
         }
-
     }
 
     void OnDrawGizmos()
@@ -206,5 +152,11 @@ public class Enemy : MonoBehaviour
         {
             Gizmos.DrawWireCube(c, Vector3.one * 0.3f);
         }
+    }
+
+    void StartCooldown()
+    {
+        inCooldown = true;
+        cooldownTimer = afterChaseCooldown;
     }
 }

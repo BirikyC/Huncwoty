@@ -19,12 +19,14 @@ public class SceneFader : MonoBehaviour
     {
         if (!dialogueManager) return;
         dialogueManager.OnDialogueFinished += HandleDialogueFinished;
+        dialogueManager.OnDeathDialogueFinished += HandleDialogueFinished;
     }
 
     private void OnDisable()
     {
         if (!dialogueManager) return;
         dialogueManager.OnDialogueFinished -= HandleDialogueFinished;
+        dialogueManager.OnDeathDialogueFinished -= HandleDialogueFinished;
     }
 
     public void LoadScene(string sceneName, bool shouldLoadLastDialogue = false)

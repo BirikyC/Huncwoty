@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public enum PlayerRotation
 {
@@ -12,6 +13,8 @@ public enum PlayerRotation
 
 public class PlayerController : MonoBehaviour
 {
+    public event Action OnDied;
+
     private Rigidbody2D rb;
     private Vector2 input;
     
@@ -62,6 +65,14 @@ public class PlayerController : MonoBehaviour
         if(gameTimer.GetPastTime() >= arrowDelay && !arrowController.IsActive())
         {
             arrowController.Show();
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            OnDied.Invoke();
         }
     }
 
