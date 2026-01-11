@@ -7,25 +7,39 @@ using System;
 public class DialogueManager : MonoBehaviour
 {
     public event Action<string> OnDialogueFinished;
+    public event Action<string> OnDeathDialogueFinished;
 
     [SerializeField] private Canvas dialogueCanvas;
     [SerializeField] private TextMeshProUGUI dialogueText;
 
     [SerializeField] private PlayerController player;
+    [SerializeField] private GameTimer gameTimer;
 
     [SerializeField] private List<string> startDialogueTexts = new List<string>();
     [SerializeField] private List<string> endDialogueTexts = new List<string>();
+    [SerializeField] private List<string> dieDialogueTexts = new List<string>();
     private List<string> currentDialogueText;
     private int currentText = 0;
 
     private bool isActive = false;
     private bool isLastDialogue = false;
+    private bool isDeathDialogue = false;
 
     private string nextSceneName = "";
 
     private void Start()
     {
         dialogueCanvas.gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        player.OnDied += HandlePlayerDeath;
+    }
+
+    private void OnDisable()
+    {
+        player.OnDied -= HandlePlayerDeath;
     }
 
     public void OnSkip(InputAction.CallbackContext context)
@@ -44,7 +58,12 @@ public class DialogueManager : MonoBehaviour
             {
                 OnDialogueFinished.Invoke(nextSceneName);
             }
+            else if (isDeathDialogue)
+            {
+                OnDeathDialogueFinished.Invoke(nextSceneName);
+            }
 
+                gameTimer.Continue();
             player.ToggleFreezeMovement(false);
             return;
         }
@@ -70,6 +89,7 @@ public class DialogueManager : MonoBehaviour
         ShowText(currentDialogueText[0]);
         currentText = 1;
 
+        gameTimer.Stop();
         player.ToggleFreezeMovement(true);
     }
 
@@ -87,6 +107,25 @@ public class DialogueManager : MonoBehaviour
 
         nextSceneName = sceneName;
 
+        gameTimer.Stop();
+        player.ToggleFreezeMovement(true);
+    }
+
+    private void HandlePlayerDeath()
+    {
+        currentDialogueText = dieDialogueTexts;
+        isActive = true;
+
+        dialogueCanvas.gameObject.SetActive(true);
+
+        ShowText(currentDialogueText[0]);
+        currentText = 1;
+
+        isDeathDialogue = true;
+
+        nextSceneName = "MainMenu";
+
+        gameTimer.Stop();
         player.ToggleFreezeMovement(true);
     }
 }
