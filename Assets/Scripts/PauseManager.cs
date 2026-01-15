@@ -16,4 +16,11 @@ public class PauseManager : MonoBehaviour
         pauseMenu.ToggleMenu(isPaused);
         player.ToggleFreezeMovement(isPaused);
     }
+
+    public void UnPause()
+    {
+        isPaused = false;
+        pauseMenu.ToggleMenu(isPaused);
+        player.ToggleFreezeMovement(isPaused);
+    }
 }
