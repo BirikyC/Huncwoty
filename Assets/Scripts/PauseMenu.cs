@@ -1,9 +1,11 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameTimer gameTimer;
+    [SerializeField] private SceneFader sceneFader;
+    [SerializeField] private PauseManager pauseManager;
 
     void Start()
     {
@@ -26,12 +28,13 @@ public class PauseMenu : MonoBehaviour
 
     public void ResumeButton()
     {
-        gameObject.SetActive(false);
-        gameTimer.Continue();
+        pauseManager.UnPause();
     }
 
     public void QuitButton()
     {
-        SceneManager.LoadScene("MainMenu");
+
+        gameTimer.Continue();
+        sceneFader.LoadScene("MainMenu");
     }
 }
